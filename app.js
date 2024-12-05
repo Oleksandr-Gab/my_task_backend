@@ -10,8 +10,8 @@ import cardRouter from "./routes/cardRouter.js";
 import columnsRouter from "./routes/columnsRouter.js";
 import emailSupportRouter from "./emailSupport/emailRouter.js";
 
-import swaggerUi from "swagger-ui-express";
-import swaggerDocument from "./swagger.json" assert { type: "json" };
+// import swaggerUi from "swagger-ui-express";
+// import swaggerDocument from "./swagger.json" assert { type: "json" };
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -26,7 +26,7 @@ app.use("/api/columns", columnsRouter);
 app.use("/api/help", emailSupportRouter);
 
 // ~swagger;
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((_, res) => {
     res.status(404).json({ message: "Route not found" });
