@@ -3,51 +3,55 @@ import ctrlWrapper from "../helpers/ctrlWrapper.js";
 import Cards from "../models/cardSchema.js";
 import Column from "../models/columnsSchema.js";
 
-export const getAllCards = ctrlWrapper(async (req, res) => {
-  const { columnId } = req.query;
-
-  const cards = await Cards.find({ column: columnId });
-
-  if (!cards.length) throw HttpError(404, "Cards not found");
-  res.send({ cards });
+export const getAllCards = ctrlWrapper(async (req, res, next) => {
+    const { columnId } = req.query;
+    try {
+        const cards = await Cards.find({ column: columnId });
+        res.json({ cards });
+    } catch (error) {
+        next(e);
+    }
 });
 
 export const addCard = ctrlWrapper(async (req, res) => {
-  const { title, description, priority, deadline, columnId, board } = req.body;
-  const card = {
-    title: title,
-    description: description,
-    priority: priority,
-    deadline: deadline,
-    column: columnId,
-    board: board,
-  };
+    const { title, description, priority, deadline, columnId, board } =
+        req.body;
+    const card = {
+        title: title,
+        description: description,
+        priority: priority,
+        deadline: deadline,
+        column: columnId,
+        board: board,
+    };
 
-  const column = await Column.findById(columnId);
-  if (!column) throw HttpError(404);
+    const column = await Column.findById(columnId);
+    if (!column) throw HttpError(404);
 
-  console.log(columnId);
+    console.log(columnId);
 
-  const result = await Cards.create(card);
+    const result = await Cards.create(card);
 
-  res.status(201).send(result);
+    res.status(201).send(result);
 });
 
 export const updateCard = ctrlWrapper(async (req, res) => {
-  const { cardId } = req.params;
-  const newCard = req.body;
+    const { cardId } = req.params;
+    const newCard = req.body;
 
-  const result = await Cards.findByIdAndUpdate(cardId, newCard, { new: true });
-  if (!result) throw HttpError(404);
+    const result = await Cards.findByIdAndUpdate(cardId, newCard, {
+        new: true,
+    });
+    if (!result) throw HttpError(404);
 
-  res.send(result);
+    res.send(result);
 });
 
 export const deleteCard = ctrlWrapper(async (req, res) => {
-  const { cardId } = req.params;
+    const { cardId } = req.params;
 
-  const result = await Cards.findByIdAndDelete(cardId);
-  if (!result) throw HttpError(404);
+    const result = await Cards.findByIdAndDelete(cardId);
+    if (!result) throw HttpError(404);
 
-  res.send({ message: "Card deleted successfully" });
+    res.send({ message: "Card deleted successfully" });
 });
