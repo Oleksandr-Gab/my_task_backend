@@ -20,9 +20,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/users", usersRouter);
-app.use("/api/cards", cardRouter);
 app.use("/api/boards", boardRouter);
 app.use("/api/columns", columnsRouter);
+app.use("/api/cards", cardRouter);
 app.use("/api/help", emailSupportRouter);
 
 // ~swagger;
