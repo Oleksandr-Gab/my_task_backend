@@ -3,7 +3,7 @@ import Column from "../models/columnsSchema.js";
 import HttpError from "../helpers/HttpError.js";
 
 export const getAllColumns = async (req, res, next) => {
-    const { boardId } = req.body;
+    const { boardId } = req.params;
     try {
         const columns = await Column.find({
             owner: req.user.id,
