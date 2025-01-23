@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 
-app.use("/users", usersRouter);
+app.use("/api/users", usersRouter);
 app.use("/api/boards", boardRouter);
 app.use("/api/columns", columnsRouter);
 app.use("/api/cards", cardRouter);
