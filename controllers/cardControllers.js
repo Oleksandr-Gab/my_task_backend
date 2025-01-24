@@ -2,7 +2,7 @@ import HttpError from "../helpers/HttpError.js";
 import Cards from "../models/cardSchema.js";
 
 export const getAllCards = async (req, res, next) => {
-    const { columnId } = req.params;
+    const { columnId } = req.query;
     try {
         const cards = await Cards.find({ column: columnId });
         res.json({ cards });
