@@ -11,6 +11,18 @@ export const getAllCards = async (req, res, next) => {
     }
 };
 
+export const getOneCard = async (req, res, next) => {
+    const { cardId } = req.params;
+    if (!cardId) throw HttpError(404);
+    try {
+        const card = await Cards.findOne({ _id: cardId, owner: req.user.id });
+        if (!card) throw HttpError(404);
+        res.json({ card });
+    } catch (e) {
+        next(e);
+    }
+};
+
 export const addCard = async (req, res, next) => {
     const { title, description, priority, deadline, columnId, board } =
         req.body;
