@@ -12,11 +12,9 @@ export const cardCreateSchema = Joi.object({
 });
 
 export const cardUpdateSchema = Joi.object({
-    title: Joi.string().required().messages({
-        "string empty": '"title" cannot be an empty field',
-    }),
-    description: Joi.string().required(),
-    priority: Joi.string().valid("Low", "Medium", "High", "Without"),
+    title: Joi.string().optional(),
+    description: Joi.string().optional(),
+    priority: Joi.string().optional().valid("Low", "Medium", "High", "Without"),
     columnId: Joi.string().optional(),
     deadline: Joi.date().optional(),
 });
