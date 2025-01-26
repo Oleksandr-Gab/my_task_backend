@@ -1,7 +1,9 @@
 import Joi from "joi";
 
 export const cardCreateSchema = Joi.object({
-    title: Joi.string().required(),
+    title: Joi.string().required().messages({
+        "string.empty": '"title" cannot be an empty field',
+    }),
     description: Joi.string().required(),
     priority: Joi.string()
         .valid("Low", "Medium", "High", "Without")
