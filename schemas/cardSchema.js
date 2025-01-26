@@ -15,6 +15,6 @@ export const cardUpdateSchema = Joi.object({
     title: Joi.string().optional(),
     description: Joi.string().optional(),
     priority: Joi.string().optional().valid("Low", "Medium", "High", "Without"),
-    columnId: Joi.string().optional(),
+    column: Joi.string().optional(),
     deadline: Joi.date().optional(),
 });
