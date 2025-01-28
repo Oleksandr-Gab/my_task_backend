@@ -23,5 +23,4 @@ export const boardUpdateSchema = Joi.object({
     background: Joi.string().messages({
         "string.empty": '"background" cannot be an empty field',
     }),
-    _id: Joi.string().optional(),
 });
