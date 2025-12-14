@@ -127,15 +127,30 @@ export const userEdit = async (req, res, next) => {
     if (req.file) {
         imgPath = req.file.path;
         filename = req.file.filename;
+       
     }
 
     try {
-        let avatarURL;
+        let avatarURL;      
+        const folderName = "user-avatars";
 
         if (imgPath) {
+            const uniqueId = filename.split(".")[0];
             const uploadResult = await cloudinary.v2.uploader.upload(imgPath, {
-                public_id: filename.split(".")[0],
+            folder: folderName,
+            public_id: uniqueId,
+            transformation: [
+                {
+                    width: 240, 
+                    height: 360, 
+                    crop: "fill", 
+                    gravity: "face",
+                    quality: "auto", 
+                    fetch_format: "auto"
+                }
+            ]
             });
+           
             avatarURL = uploadResult.secure_url;
         }
 
@@ -162,11 +177,22 @@ export const userEdit = async (req, res, next) => {
             return res.status(404).json({ message: "User not found" });
         }
 
+        const token = jwt.sign(
+            { id: user._id, email: user.email },
+            process.env.JWT_SECRET,
+            { expiresIn: "10d" }
+        );
+
+        await User.findByIdAndUpdate(user._id, { token }, { new: true });
+
         return res.status(201).json({
-            userName: user.userName,
-            email: user.email,
-            avatarURL: user.avatarURL,
-            thema: user.thema,
+            token: token,
+            user: {
+                userName: user.userName,
+                email: user.email,
+                avatarURL: user.avatarURL,
+                thema: user.thema,
+            },
         });
     } catch (e) {
         next(e);
